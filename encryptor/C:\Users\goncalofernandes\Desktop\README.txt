@@ -1,0 +1,1 @@
+Your files have been encrypted, send 0.2 bitcoin to my bank account, and I will give you the decryptor. KEY: AkU8EMxcWySZmr8VEaSf2G0RgQS4liJYZs8HRMESNVw=
