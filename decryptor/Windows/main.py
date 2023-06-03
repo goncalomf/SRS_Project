@@ -1,13 +1,14 @@
 import os
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 
 
 def main():
     backslash = "\\"
     base_path = "C:" + backslash + "Users"
     ignore = ['A Minha Música', 'Os Meus Vídeos', 'As Minhas Imagens', 'FreeVBucks.exe', "All Users", "Default",
-              "Default User", "desktop.ini", "Public"]
+              "Default User", "desktop.ini", "Public", 'README.txt']
     key = input("Insert key: ").encode()
+    print(key)
     f = Fernet(key)
 
     users = get_users(base_path, backslash, ignore)
@@ -53,13 +54,19 @@ def loop(directories: list[str], ignore: list[str], f: Fernet):
 def read(file_path: str, f: Fernet):
     with open(file_path, "rb") as file:
         content = file.read()
-    removing_magic(content, file_path, f)
+        print(content)
+        print(file_path)
+        removing_magic(content, file_path, f)
 
 
 def removing_magic(content, file_path: str, f: Fernet):
-    e_content = f.decrypt(content)
-    with open(file_path, "wb") as file:
-        file.write(e_content)
+    try:
+        e_content = f.decrypt(content)
+        with open(file_path, "wb") as file:
+            file.write(e_content)
+    except InvalidToken:
+        with open(file_path, "wb") as file:
+            file.write(content)
 
 
 if __name__ == "__main__":

