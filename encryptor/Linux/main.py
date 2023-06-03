@@ -32,7 +32,7 @@ def loop(directories: list[str], ignore: list[str], slash: str, f: Fernet):
                 for file in os.listdir(directory):
                     if file in ignore:
                         continue
-                    if file in file[0] == ".":
+                    if "." in file:
                         continue
                     if os.path.isfile(directory + slash + file):
                         print(directory + slash + file)
