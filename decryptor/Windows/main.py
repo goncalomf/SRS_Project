@@ -1,4 +1,5 @@
 import os
+import tkinter as tk
 from cryptography.fernet import Fernet, InvalidToken
 
 
@@ -7,13 +8,44 @@ def main():
     base_path = "C:" + backslash + "Users"
     ignore = ['A Minha Música', 'Os Meus Vídeos', 'As Minhas Imagens', 'FreeVBucks.exe', "All Users", "Default",
               "Default User", "desktop.ini", "Public", 'README.txt']
-    key = input("Insert key: ").encode()
-    print(key)
-    f = Fernet(key)
+    key = get_key()
+    f = Fernet(key.encode())
 
     users = get_users(base_path, backslash, ignore)
     directories = set_directories(users, backslash)
     loop(directories, ignore, f)
+
+
+def get_key():
+    global entry
+
+    window = tk.Tk()
+
+    window.title("File Decryptor")
+
+    window.geometry("500x200")
+
+    window.update_idletasks()
+    width = window.winfo_width()
+    height = window.winfo_height()
+    x = (window.winfo_screenwidth() // 2) - (width // 2)
+    y = (window.winfo_screenheight() // 2) - (height // 2)
+    window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+
+    window.resizable(False, False)
+
+    label = tk.Label(window, text="Enter your key:", font=("Arial", 16, "bold"))
+    label.pack()
+
+    entry = tk.Entry(window, width=50)
+    entry.pack()
+
+    button = tk.Button(window, text="Decrypt Files", command=window.quit)
+    button.pack()
+
+    window.mainloop()
+
+    return entry.get()
 
 
 def get_users(base_path: str, backslash: str, ignore: list[str]):
@@ -54,8 +86,6 @@ def loop(directories: list[str], ignore: list[str], f: Fernet):
 def read(file_path: str, f: Fernet):
     with open(file_path, "rb") as file:
         content = file.read()
-        print(content)
-        print(file_path)
         removing_magic(content, file_path, f)
 
 
