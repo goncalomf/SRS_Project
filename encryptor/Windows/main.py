@@ -108,9 +108,13 @@ def show_window(key: str):
     keyText.insert(1.0, f'{key}')
     keyText.pack()
 
-    text6 = tk.Label(window, text='Bank Account: PT50091823091280310191', fg="black",
+    text6 = tk.Label(window, text='Bank Account:', fg="black",
                      font=("Arial", 10), anchor="w")
     text6.pack(fill="x")
+
+    bankAccountText = tk.Text(window, height=1, borderwidth=0)
+    bankAccountText.insert(1.0, "PT50091823091280310191")
+    bankAccountText.pack()
 
     center_window(window)
 
