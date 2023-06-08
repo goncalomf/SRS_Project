@@ -1,0 +1,12 @@
+services:
+  db:
+    container_name: db
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/postgresql/shared-data/
+    ports:
+      - 5432:5432
+volumes:
+  db:
