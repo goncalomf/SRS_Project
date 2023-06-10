@@ -1,6 +1,5 @@
 import socket
 import psycopg2
-import tkinter as tk
 
 
 def main():
@@ -13,8 +12,7 @@ def main():
     )
 
     hostname = socket.gethostname()
-    # ipv4 = socket.gethostbyname(hostname)
-    ipv4 = "10.0.2.15"
+    ipv4 = socket.gethostbyname(hostname)
 
     cur = conn.cursor()
 
@@ -36,28 +34,6 @@ def main():
     conn.commit()
     cur.close()
     conn.close()
-
-
-def show_key(key: str):
-    window = tk.Tk()
-
-    window.title("Warning!")
-
-    window.configure()
-
-    window.geometry("600x400")
-
-    window.resizable(False, False)
-
-    text1 = tk.Label(window, text='Key:', fg="black",
-                     font=("Arial", 10), anchor="w")
-    text1.pack(fill="x")
-
-    key_text = tk.Text(window, height=1, borderwidth=0)
-    key_text.insert(1.0, key)
-    key_text.pack()
-
-    window.mainloop()
 
 
 if __name__ == "__main__":

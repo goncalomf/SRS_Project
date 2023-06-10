@@ -16,7 +16,6 @@ def main():
 
     cur = conn.cursor()
 
-
     insert_query = "INSERT INTO Decryptors (name, data) VALUES (%s, %s)"
     file_name = "Decryptor.exe"
     cur.execute(insert_query, (file_name, file_data))
@@ -25,6 +24,7 @@ def main():
 
     cur.close()
     conn.close()
+
 
 if __name__ == "__main__":
     main()
